@@ -2,7 +2,7 @@
 
 ```sh
 cd nix
-nix-shell dev
+nix-shell deps
 ```
 
 ### Develop and test in a pure environment
