@@ -1,6 +1,7 @@
 { pkgs ? import <nixpkgs> {},
   bash ? pkgs.bashInteractive,
-  binPath ? pkgs.stdenv.lib.makeBinPath [ pkgs.coreutils pkgs.busybox ],
+  binPathPkgs ? [ pkgs.nix ],
+  binPath ? pkgs.stdenv.lib.makeBinPath (binPathPkgs ++ [ pkgs.coreutils pkgs.busybox ]),
   PS1 ? ''\n\$ ''
 }: 
 let
