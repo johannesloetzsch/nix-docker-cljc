@@ -4,7 +4,7 @@ let
   binPath = pkgs.stdenv.lib.makeBinPath contents;
 in
 pkgs.dockerTools.buildImage {
-  name = "nix-flake";
+  name = "johannesloetzsch/nix-flake";
   tag = "latest";
   contents = contents;
   runAsRoot = ''
@@ -22,7 +22,7 @@ pkgs.dockerTools.buildImage {
     ln -s /etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
   '';
   config = {
-    #Cmd = [ "nix" "run" "nixpkgs#hello" ];
+    Cmd = [ "bash" ];
     Env = [ "PATH=${binPath}" ];
   };
 }
