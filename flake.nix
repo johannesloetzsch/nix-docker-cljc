@@ -22,6 +22,6 @@
       flake-docker = import ./flake-docker.nix { inherit pkgs; };
     };
 
-    defaultPackage.x86_64-linux = legacyPackages.x86_64-linux.mvn2nix;
+    defaultPackage.x86_64-linux = legacyPackages.x86_64-linux.flake-docker;
   };
 }

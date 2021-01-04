@@ -23,6 +23,6 @@ pkgs.dockerTools.buildImage {
   '';
   config = {
     Cmd = [ "bash" ];
-    Env = [ "PATH=${binPath}" ];
+    Env = [ "PATH=${binPath}:/nix/var/nix/profiles/default/bin" ];
   };
 }
