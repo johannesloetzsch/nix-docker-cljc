@@ -11,7 +11,8 @@ pkgs.dockerTools.buildImage {
     mkdir -p /etc/nix
     echo 'experimental-features = nix-command flakes' > /etc/nix/nix.conf
 
-    mkdir /tmp/
+    mkdir /tmp/ && chmod 777 /tmp/
+
     groupadd -g 0 root
     useradd -u 0 -g root -d /root -m root
     groupmems -g root -a root

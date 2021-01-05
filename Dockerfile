@@ -4,11 +4,14 @@ RUN nix-channel --add https://nixos.org/channels/nixpkgs-unstable && \
     nix-channel --update && \
     nix-env -i git
 
-## Having /nix/ as a volume allows caching between restarts of the build container
-VOLUME /nix/
-
 RUN mkdir /source/
 COPY . /source/
 WORKDIR /source/
 
-CMD nix build && ls -l result
+## Use the out-directory as a volume to retrieve the build results
+RUN mkdir /out/
+
+## 1. Build and run the clojure hello world example.
+## 2. Build the docker-container and put the result into a volume.
+CMD nix run .#example-clj-lein && \
+    nix build .#flake-docker && cp -L result /out/docker-image-nix-flake.tar.gz
