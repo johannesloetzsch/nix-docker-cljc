@@ -6,8 +6,9 @@ run:
 
 run-derived-buildserver:
 	## Example of using tho docker-container to build your local projects via Dockerfile
+	## Note: `--privileged` is required for creating containers with dockerTools
 	docker build -t buildserver-example .
-	docker run -ti -v nix:/nix/ buildserver-example
+	docker run --privileged -ti -v nix:/nix/ buildserver-example
 
 bootstrap:
 	nix build .#flake-docker

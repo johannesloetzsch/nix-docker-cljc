@@ -17,3 +17,12 @@ docker run -ti johannesloetzsch/nix-flake:latest nix run nixpkgs#hello
 docker build -t buildserver-example .
 docker run -ti -v nix:/nix/ buildserver-example
 ```
+
+## caching
+
+Using nix allows simple and efficient caching. To keep downloaded and built derivations between restarts of the docker-buildserver, define `/nix` to be a volume. 
+For efficient usage of remote flakes, keep `~/.cache/nix/flake-registry.json`. Further speedup is achieved, by memorization of nix-expressions in `~/.cache/nix/eval-cache*`.
+
+```shell
+docker run -ti -v nix:/nix/ -v root:/root/ johannesloetzsch/nix-flake:latest nix run nixpkgs#hello
+```
