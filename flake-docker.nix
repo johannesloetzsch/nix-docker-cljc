@@ -1,6 +1,10 @@
 { pkgs }:
 let
-  contents = with pkgs; [ nixFlakes coreutils shadow cacert bashInteractive ];
+  contents = with pkgs; [ ## Minimal dependencies (~50MB)
+                          nixFlakes coreutils shadow cacert bashInteractive
+                          ## Requirements for circleci (~110MB)
+                          git gnutar gzip
+                        ];
   binPath = pkgs.stdenv.lib.makeBinPath contents;
 in
 pkgs.dockerTools.buildImage {

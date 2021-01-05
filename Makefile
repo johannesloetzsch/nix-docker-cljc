@@ -1,6 +1,6 @@
 ## Run or bootstrap a docker-container containing nix with flake-support
 
-bootstrap-test-push: bootstrap run run-derived-buildserver push
+bootstrap-test-push: bootstrap run run-derived-buildserver ci push
 
 run:
 	## Just as an example we use nix-flakes to run a hello-world-app
@@ -16,6 +16,10 @@ run-derived-buildserver:
 bootstrap:
 	nix build .#flake-docker
 	docker load < result
+
+ci:
+	## Note: `circle-ci local` doesn't support workflows but only single jobs (defaults to build)
+	nix run nixpkgs#circleci-cli local execute
 
 push:
 	docker login

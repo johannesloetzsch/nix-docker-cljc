@@ -1,8 +1,4 @@
 FROM johannesloetzsch/nix-flake
-## Building local repositorys with flake requires git
-RUN nix-channel --add https://nixos.org/channels/nixpkgs-unstable && \
-    nix-channel --update && \
-    nix-env -i git
 
 RUN mkdir /source/
 COPY . /source/
