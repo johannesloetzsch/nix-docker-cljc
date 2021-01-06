@@ -40,3 +40,5 @@ The repository contains a `.circleci/config.yml`, showing an example of how to c
 Caching is done based on `flake.lock` and `flake.nix`. In case one of the files changed, it will fallback to the latest available cache.
 
 Note: Circleci requires that nix builds run without sandboxing, otherwise it fails with „_cannot set host name: Operation not permitted_“.
+
+The example also shows how a file from a derivation can be uploaded to an github release.
