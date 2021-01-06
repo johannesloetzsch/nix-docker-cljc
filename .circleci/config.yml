@@ -30,11 +30,38 @@ jobs:
             - nix-{{ checksum "flake.lock" }}-{{ checksum "flake.nix" }}
             - nix
       - run: nix run .#example-clj-lein
+  deploy:
+    docker:
+      - image: johannesloetzsch/nix-flake:latest
+    steps:
+      - run:
+          name: Disable Sandbox
+          command: mkdir -p ~/.config/nix/; echo 'sandbox = false' > ~/.config/nix/nix.conf;
+      - checkout
+      - restore_cache:
+          keys:
+            - nix-{{ checksum "flake.lock" }}-{{ checksum "flake.nix" }}
+            - nix
+      - run: nix run .#deploy
 workflows:
   version: 2
-  build+test:
+  build+test+deploy:
     jobs:
-      - build
+      - build:
+          filters:  # tags+branches
+            tags:
+              only: /.*/
       - test:
           requires:
             - build
+          filters:  # tags+branches
+            tags:
+              only: /.*/
+      - deploy:
+          requires:
+            - test
+          filters:  # tags only
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/

@@ -11,15 +11,20 @@
     system = "x86_64-linux";
     pkgs = import nixpkgs { system="x86_64-linux"; };
     buildMavenRepositoryFromLockFile = mvn2nix-pkgs.legacyPackages.x86_64-linux.buildMavenRepositoryFromLockFile;
+    release-from = import ./examples/clj-lein/default.nix { inherit pkgs buildMavenRepositoryFromLockFile; };
   in
   rec {
     legacyPackages.x86_64-linux = {
+      ## Tools
       mvn2nix = mvn2nix-pkgs.legacyPackages.x86_64-linux.mvn2nix;
+      deploy = import ./deploy.nix { inherit pkgs release-from; };
+
+      ## Builds
+
+      flake-docker = import ./flake-docker.nix { inherit pkgs; };
 
       example-clj-lein = import ./examples/clj-lein/default.nix { inherit pkgs buildMavenRepositoryFromLockFile; };
       example-clj-lein-docker = import ./examples/clj-lein/docker.nix { inherit pkgs buildMavenRepositoryFromLockFile; };
-
-      flake-docker = import ./flake-docker.nix { inherit pkgs; };
     };
 
     defaultPackage.x86_64-linux = legacyPackages.x86_64-linux.flake-docker;
