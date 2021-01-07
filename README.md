@@ -39,6 +39,10 @@ docker run -ti -v nix:/nix/ -v root:/root/ johannesloetzsch/nix-flake:latest nix
 The repository contains a `.circleci/config.yml`, showing an example of how to configure a ci build based on nix.
 Caching is done based on `flake.lock` and `flake.nix`. In case one of the files changed, it will fallback to the latest available cache.
 
-Note: Circleci requires that nix builds run without sandboxing, otherwise it fails with „_cannot set host name: Operation not permitted_“.
-
 The example also shows how a file from a derivation can be uploaded to an github release. For using it, in circleci set `GITHUB_TOKEN` as a valid personal access token with scope `public_repo`.
+
+## Troubleshooting
+
+Circleci requires that nix builds run without `sandboxing`, otherwise it fails with „_cannot set host name: Operation not permitted_“. So we disable it by setting `sandbox = false` in `~/.config/nix/nix.conf`.
+
+Building a derivation with `dockerTools.buildImage.runAsRoot` might fail with „_'x86_64-linux' with features {kvm} is required to build_“. If you want use qemu without kvm, set `system-features = kvm` in `~/.config/nix/nix.conf`.
