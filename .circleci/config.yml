@@ -18,6 +18,7 @@ jobs:
       - run: nix build .#flake-docker
       - run: nix build .#example-clj-lein
       - run: nix build .#example-clj-lein-docker
+      - run: nix build .#example-clj-deps
       - save_cache:
           key: nix-{{ checksum "flake.lock" }}-{{ checksum "flake.nix" }}
           paths:
@@ -35,6 +36,7 @@ jobs:
             - nix-{{ checksum "flake.lock" }}-{{ checksum "flake.nix" }}
             - nix
       - run: nix run .#example-clj-lein
+      - run: nix run .#example-clj-deps
   deploy:
     docker:
       - image: johannesloetzsch/nix-flake:latest

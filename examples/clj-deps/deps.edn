@@ -1,0 +1,6 @@
+{:paths   ["src"]
+ :deps    {}
+ :aliases {:run     {:main-opts ["-m" "example.core"]}
+           :test    {;:extra-deps  {lambdaisland/kaocha {:mvn/version "0.0-529"}}
+                     :extra-paths ["test"]
+                     :main-opts   ["-m" "kaocha.runner"]}}}

@@ -25,6 +25,8 @@
 
       example-clj-lein = import ./examples/clj-lein/default.nix { inherit pkgs buildMavenRepositoryFromLockFile; };
       example-clj-lein-docker = import ./examples/clj-lein/docker.nix { inherit pkgs buildMavenRepositoryFromLockFile; };
+
+      example-clj-deps = import ./examples/clj-deps/default.nix { inherit pkgs buildMavenRepositoryFromLockFile; };
     };
 
     defaultPackage.x86_64-linux = legacyPackages.x86_64-linux.flake-docker;
