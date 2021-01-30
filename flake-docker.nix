@@ -23,8 +23,11 @@ pkgs.dockerTools.buildImage {
     groupadd --system nixbld
     useradd --system -g nixbld nixbld
     groupmems -g nixbld -a nixbld
+    useradd --system nobody
 
     ln -s /etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
+
+    mkdir -p /usr/bin && cp $(${pkgs.which}/bin/which env) /usr/bin/
   '';
   config = {
     Cmd = [ "bash" ];
