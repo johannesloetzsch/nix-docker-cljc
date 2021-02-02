@@ -15,6 +15,8 @@
   in
   rec {
     legacyPackages.x86_64-linux = {
+      inherit nixpkgs pkgs;
+
       ## Tools
       mvn2nix = mvn2nix-pkgs.legacyPackages.x86_64-linux.mvn2nix;
       deploy = import ./deploy.nix { inherit pkgs release-from; };

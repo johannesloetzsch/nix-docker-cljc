@@ -15,6 +15,17 @@ docker run -ti johannesloetzsch/nix-flake:latest bash
 docker run -ti johannesloetzsch/nix-flake:latest nix run nixpkgs#hello
 ```
 
+The last command downloads the latest version of `hello` from the flake-registry.
+
+When reproducibility matters, you can use `nixpkgs` in the version provided by the flake used to build the container.
+This also helps keeping the `/nix/store` thin, by preventing the installation of packages in multiple versions.
+
+```shell
+docker run -ti johannesloetzsch/nix-flake:latest nix run /etc/nixos#pkgs.hello
+docker run -ti johannesloetzsch/nix-flake:latest nix eval /etc/nixos#nixpkgs.lastModifiedDate
+docker run -ti johannesloetzsch/nix-flake:latest nix eval /etc/nixos#nixpkgs.rev
+```
+
 `Dockerfile` is an example how to build local repositories, on a system without nix.
 
 
@@ -22,6 +33,9 @@ docker run -ti johannesloetzsch/nix-flake:latest nix run nixpkgs#hello
 docker build -t buildserver-example .
 docker run -ti -v nix:/nix/ buildserver-example
 ```
+
+You can even use a `configuration.nix` (or `flake.nix`) to profit from [config options provided by nixos](https://nixos.org/manual/nixos/stable/index.html#ch-configuration): See
+[Example](https://github.com/community-garden/fdroid-repo/commit/8264638ddc1d30ee5098a98f81c4b2b82e7a0b83#diff-dd2c0eb6ea5cfc6c4bd4eac30934e2d5746747af48fef6da689e85b752f39557)
 
 ## Caching
 

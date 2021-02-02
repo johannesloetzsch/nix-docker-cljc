@@ -12,8 +12,20 @@ pkgs.dockerTools.buildImage {
   tag = "latest";
   contents = contents;
   runAsRoot = ''
-    mkdir -p /etc/nix
+    ## nix flakes support
+
+    mkdir -p /etc/nix /etc/nixos
     echo 'experimental-features = nix-command flakes' > /etc/nix/nix.conf
+
+    ## keep the flake.nix and the flake.lock
+    ## this allows us to install software of the same pkgs state inside the container
+
+    cp ${./flake.nix} /etc/nixos/flake.nix
+    cp ${./flake.lock} /etc/nixos/flake.lock
+
+    ## minimal essentials required to run nix
+
+    ln -s /etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
 
     mkdir /tmp/ && chmod 777 /tmp/
 
@@ -23,9 +35,11 @@ pkgs.dockerTools.buildImage {
     groupadd --system nixbld
     useradd --system -g nixbld nixbld
     groupmems -g nixbld -a nixbld
-    useradd --system nobody
 
-    ln -s /etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
+    ## a few common expectations by other tools
+
+    groupadd nogroup
+    useradd --system -g nogroup nobody
 
     mkdir -p /usr/bin && cp $(${pkgs.which}/bin/which env) /usr/bin/
   '';
